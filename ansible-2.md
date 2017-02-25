@@ -88,7 +88,7 @@ As of 2.2 - flush_handlers, **refresh_inventory**, noop, clear_facts, clear_host
 
 ---
 
-## THE OBSTACLES
+## The Obstacles
 
 ----
 
@@ -130,7 +130,7 @@ As of 2.2 - flush_handlers, **refresh_inventory**, noop, clear_facts, clear_host
 
 ---
 
-## bigpanda's process 
+## BigPanda's Process 
 
 ----
 
