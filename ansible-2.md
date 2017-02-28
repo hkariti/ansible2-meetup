@@ -104,8 +104,8 @@ Treat roles ilke tasks:
 
 ### loop control
 
+* Change loop var (instead of `item`)
 
-* Change loop var:
 ```
     - debug: var=shlomo
       with_items: "{{stuff}}"
@@ -113,13 +113,21 @@ Treat roles ilke tasks:
           loop_var: shlomo
 ```
 
-* Change what to print:
+----
+
+### loop control
+
+* Change what to print in the output for each item:
+
 ```
-    - debug: var=big_dict.key1
+    - command: something with {{item.key1}} and {{item.key2}}
       with_items: "{{list_of_dicts}}"
       loop_control:
          label: "{{item.name}}"
 ```
+
+output:
+![](loop_label.png)
 
 ----
 
@@ -134,6 +142,7 @@ Instead of:
   with_items: ...
 
 - add_host: name=new_host groups=group1,group2,...
+  with_items: ...
 ```
 
 do:
