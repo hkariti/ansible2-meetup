@@ -90,7 +90,35 @@ The error was: error while evaluating conditional (some_var == 1):
 
 ### meta
 
-As of 2.2 - flush_handlers, **refresh_inventory**, noop, clear_facts, clear_host_errors, end_play
+Instead of:
+
+```
+- command: rm {{my_fact_cache_dir}}/{{ansible_hostname}}
+
+- ec2_create: ...
+  with_items: ...
+
+- add_host: name=new_host groups=group1,group2,...
+```
+
+do:
+
+```
+- meta: clear_facts
+
+- ec2_create: ...
+  with_items: ...
+
+- meta: refresh_inventory
+```
+
+----
+
+### meta
+
+As of 2.2 - flush_handlers, refresh_inventory, noop, clear_facts, clear_host_errors, end_play
+
+Check out the meta module page in the docs for more info.
 
 ----
 
@@ -147,7 +175,7 @@ As of 2.2 - flush_handlers, **refresh_inventory**, noop, clear_facts, clear_host
 
 ----
 
-### Easy changes
+### Easy!
 
 * Go over the porting doc, and fix obvious things
     * `git grep -l | xargs sed` galore
@@ -158,6 +186,50 @@ As of 2.2 - flush_handlers, **refresh_inventory**, noop, clear_facts, clear_host
 
 ----
 
+### Oh noes
+
+* Tags and handlers don't work with includes
+
+```
+tasks:
+    - template: something
+      notify: restart
+handlers:
+    - include: ../code/reuse/is/good/handlers.yml
+```
+
+----
+
+### No ohes
+
+* Bug with multiple plays and unreachable hosts
+
+```
+- hosts: all
+  tasks:
+     - ping:
+
+- hosts: reachable_server_1
+  tasks:
+    - debug: msg="I'm still alive!!"
+```
+
+----
+
+### Wait what?
+
+* Issues were spread over several bug reports
+* A fix should've come soon(tm)
+* Eventally it did
+
+----
+
+### Skip 2.0
+
+![](dont.gif)
+
+----
+
 ### Harder changes
 
 * Be ready to debug odd things failing
@@ -165,15 +237,6 @@ As of 2.2 - flush_handlers, **refresh_inventory**, noop, clear_facts, clear_host
 
 * A few weeks of weird problems now and then
     * Weird usecases, rarely used scripts, etc
-
----
-
-### Skip 2.0
-![](dont.gif)
-
-* If you're using 2.0, you're missing out:
-    * Tags and handlers don't work with includes
-    * Bug with multiple plays and unreachable hosts
 
 ---
 
