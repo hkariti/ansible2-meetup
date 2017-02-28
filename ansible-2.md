@@ -1,6 +1,12 @@
 # Ansible 2 FTW
 ![](./bigpanda_logo.png)
 
+Noa  Kurman & Hagai Kariti
+
+---
+
+# Who Are We?
+
 ---
 
 ### Why ansible 2 - faster, stronger, better
@@ -86,9 +92,15 @@ The error was: error while evaluating conditional (some_var == 1):
 
 As of 2.2 - flush_handlers, **refresh_inventory**, noop, clear_facts, clear_host_errors, end_play
 
+----
+
+### ansible containers - upcoming meetup 
+![](excited.gif)
+
 ---
 
 ## The Obstacles
+![](mad.gif)
 
 ----
 
@@ -131,6 +143,7 @@ As of 2.2 - flush_handlers, **refresh_inventory**, noop, clear_facts, clear_host
 ---
 
 ## BigPanda's Process 
+![](panda2.gif)
 
 ----
 
@@ -156,6 +169,8 @@ As of 2.2 - flush_handlers, **refresh_inventory**, noop, clear_facts, clear_host
 ---
 
 ### Skip 2.0
+![](dont.gif)
+
 * If you're using 2.0, you're missing out:
     * Tags and handlers don't work with includes
     * Bug with multiple plays and unreachable hosts
