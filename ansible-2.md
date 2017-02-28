@@ -1,7 +1,7 @@
 # Ansible 2 FTW
 ![](./bigpanda_logo.png)
 
-Noa  Kurman & Hagai Kariti
+Hagai Kariti & Noa Kurman
 
 ---
 
@@ -149,7 +149,6 @@ Check out the meta module page in the docs for more info.
 ### More Syntax changes
 
 * Tags and variables in includes
-
 ```
     - include: file.yml tags=asd var=value #Wrong
 
