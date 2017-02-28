@@ -88,6 +88,41 @@ The error was: error while evaluating conditional (some_var == 1):
 
 ----
 
+### include_role
+
+Treat roles ilke tasks:
+
+```
+- debug: msg="Simple task, nothing special"
+
+- include_role: name=role
+
+- debug: msg="Carry on"
+```
+
+----
+
+### loop control
+
+
+* Change loop var:
+```
+    - debug: var=shlomo
+      with_items: "{{stuff}}"
+      loop_control:
+          loop_var: shlomo
+```
+
+* Change what to print:
+```
+    - debug: var=big_dict.key1
+      with_items: "{{list_of_dicts}}"
+      loop_control:
+         label: "{{item.name}}"
+```
+
+----
+
 ### meta
 
 Instead of:
@@ -241,10 +276,8 @@ handlers:
 
 ### Future releases and other goodies
 
-* Ability to control what to print in loops
 * Multiple vault passwords
 * `listen` attribute, for generic handler names
-* include_role
 * Better vpc modules
 
 ---
