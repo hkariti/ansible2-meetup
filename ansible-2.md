@@ -25,16 +25,16 @@ logical grouping of tasks and even in-play error handling
 ```
 tasks:
      - block:
-              - apt: name={{ item }} state=installed
-                with_items:
-                    - bigpanda
-                    - cowsay
-                                                            
-              - service: name=bigpanda state=started enabled=True
-                when: ansible_distribution == 'CentOS'
-        become: true
-        become_user: root
-        tag: bigpanda
+             - apt: name={{ item }} state=installed
+               with_items:
+                   - bigpanda
+                   - cowsay
+                                                           
+             - service: name=bigpanda state=started
+               when: ansible_distribution == 'CentOS'
+       become: true
+       become_user: root
+       tag: bigpanda
 ```
 
 ----
@@ -58,18 +58,6 @@ tasks:
 
 ----
 
-### Include with Loops (aka dynamic include)
-
-```
-  - include: "{{item}}.yml"
-    with_items:
-      - this
-      - is
-      - sparta
-```
-
-----
-
 ### Better error messages (somewhat)
 
 ```
@@ -88,9 +76,21 @@ The error was: error while evaluating conditional (some_var == 1):
 
 ----
 
+### Include with Loops (aka dynamic include)
+
+```
+  - include: "{{item}}.yml"
+    with_items:
+      - this
+      - is
+      - sparta
+```
+
+----
+
 ### include_role
 
-Treat roles ilke tasks:
+Treat roles like tasks:
 
 ```
 - debug: msg="Simple task, nothing special"
@@ -119,14 +119,14 @@ Treat roles ilke tasks:
 
 * Change what to print in the output for each item:
 
-```
-    - command: something with {{item.key1}} and {{item.key2}}
-      with_items: "{{list_of_dicts}}"
-      loop_control:
-         label: "{{item.name}}"
-```
+before:
 
-output:
+![](loop_label_before.png)
+
+----
+
+after:
+
 ![](loop_label.png)
 
 ----
@@ -184,9 +184,9 @@ Check out the meta module page in the docs for more info.
     with_items: "{{ list }}" # Current
 ```
 
-* Become instead of sudo (become_user w00tz)
+* Become instead of sudo
 
-* Octal params need leading zero
+* Octal params need leading zero (0755, not 755)
 
 ----
 
@@ -202,7 +202,7 @@ Check out the meta module page in the docs for more info.
        var: value
 ```
 
-* Many other small things (see porting guide in docs)
+* Many other syntax changes (see porting guide in docs)
     - quoting, vars_prompt, callback plugins, and more
 
 ----
@@ -210,6 +210,11 @@ Check out the meta module page in the docs for more info.
 ### root dir when running a command 
 
  Running the command module on the control server will keep the root dir (not playbook dir) as the execution dir. 
+
+```
+# This may break:
+- command: ../../../relative_path_command
+```
 
 ---
 
@@ -221,7 +226,7 @@ Check out the meta module page in the docs for more info.
 ### Easy!
 
 * Go over the porting doc, and fix obvious things
-    * `git grep -l | xargs sed` galore
+    * `git grep -l | xargs sed`
 
 * Use `ansible-lint` and `ansible-playbook --syntax-check`
 
@@ -231,7 +236,7 @@ Check out the meta module page in the docs for more info.
 
 ### Oh noes
 
-* Tags and handlers don't work with includes
+* Handlers don't work with (dynamic) includes
 
 ```
 tasks:
@@ -259,7 +264,7 @@ handlers:
 
 ----
 
-### Wait what?
+### What do?
 
 * Issues were spread over several bug reports
 * A fix should've come soon(tm)
@@ -275,11 +280,23 @@ handlers:
 
 ### Harder changes
 
-* Be ready to debug odd things failing
-    * Example: Small variable precedence changes in roles
+* Do the easy changes, merge and wait
 
 * A few weeks of weird problems now and then
     * Weird usecases, rarely used scripts, etc
+
+* Be ready to debug odd things failing
+    * Example: Small variable precedence changes in roles
+
+---
+
+### Us, now
+
+* We're currently in version 2.1
+* On our way to 2.2
+    * loop labels
+    * include_role
+    * other goodies
 
 ---
 
